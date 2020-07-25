@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from "reactstrap";
 import { Link } from "react-router-dom";
-import { Control, Form, Errors, actions } from "react-redux-form";
+import { Control, Form, Errors } from "react-redux-form";
 
-const required = val => val && val.length;
-const maxLength = len => val => !val || (val.length <= len);
-const minLength = len => val => val && (val.length >= len);
-const isNumber = val => !isNaN(+val);
-const validEmail = val => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) => !val || val.length <= len;
+const minLength = (len) => (val) => val && val.length >= len;
+const isNumber = (val) => !isNaN(+val);
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 
 class Contact extends Component {
   constructor(props) {
@@ -33,8 +33,7 @@ class Contact extends Component {
   }
 
   handleSubmit(values) {
-    console.log("Current state is: " + JSON.stringify(values));
-    alert("Curent state is: " + JSON.stringify(values));
+    this.props.postFeedback(values.firstName, values.lastName, values.phoneNum, values.email, values.agree, values.contactType, values.feeback);
     this.props.resetFeedbackForm();
   }
   render() {
@@ -74,11 +73,13 @@ class Contact extends Component {
             </a>
           </div>
         </div>
+
         <div className="row row-content">
           <div className="col-12">
             <h2>Send us your Feedback</h2>
             <hr />
           </div>
+
           <div className="col-md-10">
             <Form model="feedbackForm" onSubmit={(values) => this.handleSubmit(values)}>
               <Row className="form-group">
@@ -168,7 +169,7 @@ class Contact extends Component {
                       required: "Required",
                       minLength: "Must be at least 10 numbers",
                       maxLength: "Must be 15 numbers or less",
-                      isNumber: "Must be a number"
+                      isNumber: "Must be a number",
                     }}
                   />
                 </Col>
@@ -196,7 +197,7 @@ class Contact extends Component {
                     component="div"
                     messages={{
                       required: "Required",
-                      validEmail: "Invalid email address"
+                      validEmail: "Invalid email address",
                     }}
                   />
                 </Col>
